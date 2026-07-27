@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">DPA-SAAM</string>
+    <string name="notification_alert_title">Lectura recibida</string>
+    <string name="notification_battery_title">Carga la manilla</string>
+    <string name="notification_battery_body">Batería al %1$d%% — recarga la manilla pronto</string>
+    <string name="notification_foreground_title">Conectado a manilla</string>
+    <string name="notification_foreground_body">DPA-SAAM mantiene la conexión BLE activa</string>
+    <string name="channel_alerts_name">Alertas de manilla</string>
+    <string name="channel_battery_name">Batería baja</string>
+    <string name="channel_foreground_name">Conexión BLE</string>
 </resources>

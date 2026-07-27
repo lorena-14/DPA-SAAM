@@ -4,45 +4,38 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import co.uan.epilepsy.dpa_saam.ui.theme.DPASAAMTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
+import co.uan.epilepsy.dpa_saam.core.di.ProvideAppContainer
+import co.uan.epilepsy.dpa_saam.core.permission.PermissionCoordinator
+import co.uan.epilepsy.dpa_saam.presentation.main.MainViewModel
+import co.uan.epilepsy.dpa_saam.presentation.main.MainViewModelFactory
+import co.uan.epilepsy.dpa_saam.ui.screen.MainScreen
 import com.uan.designsystem.uikit.theme.UanTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        val app = application as DpaSaamApplication
+        val container = app.container
+
         setContent {
             UanTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                ProvideAppContainer(container) {
+                    val viewModel: MainViewModel = viewModel(
+                        factory = MainViewModelFactory(container),
                     )
+
+                    PermissionCoordinator(
+                        viewModel = viewModel,
+                        onPermissionsReady = { viewModel.onPermissionsReady() },
+                    ) {
+                        MainScreen(viewModel = viewModel)
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    DPASAAMTheme {
-        Greeting("Android")
     }
 }
